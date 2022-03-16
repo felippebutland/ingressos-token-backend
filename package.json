@@ -1,0 +1,19 @@
+{
+  "name": "ingressos",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon -r ./src/index.js"
+  },
+  "author": "[felippe butland, mateus francheschina, rafael ignaulin, stefanny da rosa, alexandre zanella]",
+  "license": "ISC",
+  "dependencies": {
+    "babel-node": "^0.0.1-security",
+    "cors": "^2.8.5",
+    "eslint": "^8.11.0",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}
