@@ -1,6 +1,6 @@
+import app from '@shared/http/server';
 import express from 'express';
 import config from './config';
-const app = require('./shared/http/server');
 
 app.use(express.json());
 
