@@ -1,14 +1,10 @@
-const { Router} = require('express');
-const express = require('express');
-const cors = require('cors');
-
-const routes = require('./routes');
+import cors from 'cors';
+import express from 'express';
 
 // const {
 //   errorHandler,
 //   schemaValidator,
 // } = require('../middlewares');
-
 
 const app = express();
 
@@ -34,12 +30,12 @@ app.use(express.json());
 //     );
 //   }
 
-  // const handlers = [router];
-  // if (group.prefix) handlers.unshift(group.prefix);
+// const handlers = [router];
+// if (group.prefix) handlers.unshift(group.prefix);
 
 //   app.use(...handlers);
 // }
 
 // app.use(errorHandler);
 
-module.exports = app;
+export default app;
