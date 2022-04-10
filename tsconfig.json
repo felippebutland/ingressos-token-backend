@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es2016", 
-    "module": "commonjs", 
-    "baseUrl": ".",                                  
+    "target": "es2016",
+    "incremental": true,
+    "module": "commonjs",
+    "baseUrl": "./src",
+    "rootDir": ".",
     "paths": {
-      "@user/*": ["./src/modules/user/*"],
-      "@shared/*": ["./src/shared/*"],
-    },                                      
-    "resolveJsonModule": true ,
-    "outDir": "./dist",                                   
+      "@user/*": ["modules/user/*"],
+      "@ticket/*": ["modules/ticket/*"],
+      "@shared/*": ["shared/*"]
+    },
+    "resolveJsonModule": true,
+    "outDir": "./dist",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true ,
-    "noUnusedLocals": true,                           
-    "skipLibCheck": true 
+    "strict": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
   }
 }
