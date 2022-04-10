@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import {
-  author as author,
+  author,
   name as appName,
   version as appVersion,
-} from 'package.json';
+} from '../../package.json';
 
 dotenv.config({
   path: {
