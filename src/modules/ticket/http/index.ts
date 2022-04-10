@@ -6,7 +6,6 @@ export const ticketRoutes = Router();
 
 ticketRoutes.post('/', async (req, res) => {
   const { category, name }: Ticket = req.body;
-  console.log('mahoe');
 
   return res.status(201).json(await save({ category, name }));
 });
