@@ -11,13 +11,46 @@ datasource db {
 }
 
 model Ticket {
-  id       String   @id @default(uuid())
-  name     String
-  category Category
+  id           String      @id @default(uuid())
+  name         String
+  ticketTypeId String
+  ticketType   TicketType? @relation(fields: [ticketTypeId], references: [id])
+  Event        Event?      @relation(fields: [eventId], references: [id])
+  eventId      String?
 }
 
-enum Category {
-  CONCERT
-  PARTY
-  EVENT
+model TicketType {
+  id              String            @id @default(uuid())
+  type            String
+  Ticket          Ticket[]
+  EventTicketType EventTicketType[]
+}
+
+model Event {
+  id              String            @id @default(uuid())
+  name            String
+  description     String
+  startDate       DateTime
+  endDate         DateTime
+  tickets         Ticket[]
+  EventTicketType EventTicketType[]
+  locationId      String
+  location        Location?         @relation(fields: [locationId], references: [id])
+}
+
+model EventTicketType {
+  id           String      @id @default(uuid())
+  eventId      String
+  event        Event?      @relation(fields: [eventId], references: [id])
+  ticketTypeId String
+  ticketType   TicketType? @relation(fields: [ticketTypeId], references: [id])
+}
+
+model Location {
+  id      String  @id @default(uuid())
+  city    String
+  UF      String
+  address String
+  cep     String
+  Event   Event[]
 }
