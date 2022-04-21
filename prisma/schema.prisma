@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Ticket {
+model Event {
   id          String     @id @default(uuid())
   name        String
   category    Categories
@@ -21,6 +21,53 @@ model Ticket {
   updatedAt   DateTime   @updatedAt
   createdAt   DateTime
   locationId  String
+}
+
+model Ticket {
+  id             String          @id @default(uuid())
+  name           String
+  ticketType     TicketType      @relation(fields: [ticketTypeId], references: [id])
+  ticketTypeId   String
+  userPurchaseId String
+  UserPurchases  UserPurchases[]
+  userId         String
+  User           User            @relation(fields: [userId], references: [id])
+}
+
+model TicketType {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Int
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime
+  Ticket      Ticket[]
+}
+
+model User {
+  id            String          @id @default(uuid())
+  name          String
+  email         String
+  password      String
+  cpf           String
+  phone         String
+  location      Location        @relation(fields: [locationId], references: [id])
+  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime
+  locationId    String
+  type          TypeUser
+  UserPurchases UserPurchases[]
+  Ticket        Ticket[]
+  Configuration Configuration[]
+}
+
+model UserPurchases {
+  id       String @id @default(uuid())
+  payment  Json
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+  ticketId String
 }
 
 model Location {
@@ -35,21 +82,23 @@ model Location {
   longitude Float
   updatedAt DateTime @updatedAt
   createdAt DateTime
-  Ticket    Ticket[]
   User      User[]
+  Event     Event[]
 }
 
-model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String
-  password   String
-  cpf        String
-  phone      String
-  location   Location @relation(fields: [locationId], references: [id])
-  updatedAt  DateTime @updatedAt
-  createdAt  DateTime
-  locationId String
+model Configuration {
+  id          String @id @default(uuid())
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  value       Boolean
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime
+}
+
+enum TypeUser {
+  ADMIN
+  USER
 }
 
 enum Categories {
