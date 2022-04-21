@@ -11,13 +11,38 @@ datasource db {
 }
 
 model Ticket {
-  id       String   @id @default(uuid())
-  name     String
-  category Category
+  id          String     @id @default(uuid())
+  name        String
+  category    Categories
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  location    Location   @relation(fields: [locationId], references: [id])
+  updatedAt   DateTime
+  createdAt   DateTime
+  locationId  String
 }
 
-enum Category {
-  CONCERT
-  PARTY
-  EVENT
+model Location {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  city      String
+  state     String
+  zip       String
+  country   String
+  latitude  Float
+  longitude Float
+  updatedAt DateTime
+  createdAt DateTime
+  Ticket    Ticket[]
+}
+
+enum Categories {
+  SHOWS
+  TEATRO
+  DANCA
+  INFANTIL
+  FESTA
+  CLASSICOS
 }
