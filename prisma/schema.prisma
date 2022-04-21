@@ -18,7 +18,7 @@ model Ticket {
   startDate   DateTime
   endDate     DateTime
   location    Location   @relation(fields: [locationId], references: [id])
-  updatedAt   DateTime
+  updatedAt   DateTime   @updatedAt
   createdAt   DateTime
   locationId  String
 }
@@ -33,16 +33,16 @@ model Location {
   country   String
   latitude  Float
   longitude Float
-  updatedAt DateTime
+  updatedAt DateTime   @updatedAt
   createdAt DateTime
   Ticket    Ticket[]
 }
 
 enum Categories {
   SHOWS
-  TEATRO
-  DANCA
-  INFANTIL
-  FESTA
-  CLASSICOS
+  THEATER
+  DANCE
+  CHILD
+  PARTY
+  CLASSIC
 }
