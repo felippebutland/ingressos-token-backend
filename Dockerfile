@@ -1,4 +1,5 @@
-FROM node
+FROM launcher.gcr.io/google/nodejs
+
 WORKDIR /usr/app
 
 COPY package.json ./
