@@ -1,4 +1,4 @@
-FROM launcher.gcr.io/google/nodejs
+FROM gcr.io/k8s-skaffold/pack
 
 WORKDIR /usr/app
 
