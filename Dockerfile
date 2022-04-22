@@ -1,5 +1,4 @@
-FROM gcr.io/k8s-skaffold/pack
-
+FROM node
 WORKDIR /usr/app
 
 COPY package.json ./
