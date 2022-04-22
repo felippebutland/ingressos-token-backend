@@ -1,45 +1,8 @@
-/*
-  Warnings:
-
-  - The values [TEATRO,DANCA,INFANTIL,FESTA,CLASSICOS] on the enum `Categories` will be removed. If these variants are still used in the database, this will fail.
-  - You are about to drop the column `category` on the `Ticket` table. All the data in the column will be lost.
-  - You are about to drop the column `createdAt` on the `Ticket` table. All the data in the column will be lost.
-  - You are about to drop the column `description` on the `Ticket` table. All the data in the column will be lost.
-  - You are about to drop the column `endDate` on the `Ticket` table. All the data in the column will be lost.
-  - You are about to drop the column `locationId` on the `Ticket` table. All the data in the column will be lost.
-  - You are about to drop the column `startDate` on the `Ticket` table. All the data in the column will be lost.
-  - You are about to drop the column `updatedAt` on the `Ticket` table. All the data in the column will be lost.
-  - Added the required column `ticketTypeId` to the `Ticket` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `userId` to the `Ticket` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `userPurchaseId` to the `Ticket` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateEnum
 CREATE TYPE "TypeUser" AS ENUM ('ADMIN', 'USER');
 
--- AlterEnum
-BEGIN;
-CREATE TYPE "Categories_new" AS ENUM ('SHOWS', 'THEATER', 'DANCE', 'CHILD', 'PARTY', 'CLASSIC');
-ALTER TABLE "Event" ALTER COLUMN "category" TYPE "Categories_new" USING ("category"::text::"Categories_new");
-ALTER TYPE "Categories" RENAME TO "Categories_old";
-ALTER TYPE "Categories_new" RENAME TO "Categories";
-DROP TYPE "Categories_old";
-COMMIT;
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_locationId_fkey";
-
--- AlterTable
-ALTER TABLE "Ticket" DROP COLUMN "category",
-DROP COLUMN "createdAt",
-DROP COLUMN "description",
-DROP COLUMN "endDate",
-DROP COLUMN "locationId",
-DROP COLUMN "startDate",
-DROP COLUMN "updatedAt",
-ADD COLUMN     "ticketTypeId" TEXT NOT NULL,
-ADD COLUMN     "userId" TEXT NOT NULL,
-ADD COLUMN     "userPurchaseId" TEXT NOT NULL;
+-- CreateEnum
+CREATE TYPE "Categories" AS ENUM ('SHOWS', 'THEATER', 'DANCE', 'CHILD', 'PARTY', 'CLASSIC');
 
 -- CreateTable
 CREATE TABLE "Event" (
@@ -50,10 +13,23 @@ CREATE TABLE "Event" (
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "locationId" TEXT NOT NULL,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Ticket" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "ticketTypeId" TEXT NOT NULL,
+    "userPurchaseId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -61,9 +37,9 @@ CREATE TABLE "TicketType" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price" INTEGER NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "TicketType_pkey" PRIMARY KEY ("id")
 );
@@ -77,7 +53,7 @@ CREATE TABLE "User" (
     "cpf" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "locationId" TEXT NOT NULL,
     "type" "TypeUser" NOT NULL,
 
@@ -90,8 +66,27 @@ CREATE TABLE "UserPurchases" (
     "payment" JSONB NOT NULL,
     "userId" TEXT NOT NULL,
     "ticketId" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "UserPurchases_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Location" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "zip" TEXT NOT NULL,
+    "country" TEXT NOT NULL,
+    "latitude" DOUBLE PRECISION NOT NULL,
+    "longitude" DOUBLE PRECISION NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Location_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -101,10 +96,13 @@ CREATE TABLE "Configuration" (
     "name" TEXT NOT NULL,
     "value" BOOLEAN NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Configuration_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Ticket_ticketTypeId_key" ON "Ticket"("ticketTypeId");
 
 -- AddForeignKey
 ALTER TABLE "Event" ADD CONSTRAINT "Event_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

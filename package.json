@@ -5,12 +5,14 @@
   "main": "./src/index.ts",
   "type": "commonjs",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn ./src/index.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn ./src/index.ts",
+    "migrate": "npx prisma migrate dev"
   },
   "author": "[felippe butland, mateus franceschina, rafael ignaulin, stefanny da rosa, alexandre zanella, gabriel teixeira]",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^3.12.0",
+    "awilix-express": "^7.0.0",
     "babel-node": "^0.0.1-security",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
